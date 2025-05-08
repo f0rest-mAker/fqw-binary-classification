@@ -4,13 +4,15 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sns
 from sklearn.tree import DecisionTreeClassifier
-from sklearn.preprocessing import LabelEncoder, StandardScaler
+from sklearn.preprocessing import LabelEncoder
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import accuracy_score, confusion_matrix, classification_report, roc_curve, roc_auc_score
 
 
 def analysis_and_model_page():
+    # Главная страница, где обучаем модель и предсказываем результат
     st.title("Анализ данных и модель")
+    # Загрузка датасета
     uploaded_file = st.file_uploader("Загрузите датасет (CSV)", type="csv")
     if uploaded_file is not None:
         data = pd.read_csv(uploaded_file)
@@ -22,14 +24,10 @@ def analysis_and_model_page():
             "Torque [Nm]",
             "Tool wear [min]"
         ]].copy()
+        # Кодировка перменной Type и разделение переменных
         encoder = LabelEncoder()
         features["Type"] = encoder.fit_transform(
             features["Type"]).copy()
-        features_for_standard_scaler = ["Air temperature [K]", "Process temperature [K]",
-                                        "Rotational speed [rpm]", "Torque [Nm]", "Tool wear [min]"]
-        scaler = StandardScaler()
-        features[features_for_standard_scaler] = scaler.fit_transform(
-            features[features_for_standard_scaler])
         target = data["Machine failure"]
         X = features
         y = target
@@ -38,6 +36,7 @@ def analysis_and_model_page():
         model = DecisionTreeClassifier()
         model.fit(X_train, y_train)
 
+        # Предсказывание тестовых значения и их визуализация
         y_pred = model.predict(X_test)
         accuracy = accuracy_score(y_test, y_pred)
         conf_matrix = confusion_matrix(y_test, y_pred)
@@ -54,6 +53,7 @@ def analysis_and_model_page():
         st.subheader("Classification Report")
         st.text(classification_rep)
 
+        # Предсказывание новых данных от пользователя
         st.header("Предсказание по новым данным")
         with st.form("prediction_form"):
             st.write("Введите значения признаков для предсказания:")
@@ -75,9 +75,6 @@ def analysis_and_model_page():
                     "Torque [Nm]": torque,
                     "Tool wear [min]": tool_wear
                 })
-
-                input_data[features_for_standard_scaler] = scaler.transform(
-                    input_data[features_for_standard_scaler])
 
                 prediction = model.predict(input_data)
                 prediction_proba = model.predict_proba(input_data)[:, 1]

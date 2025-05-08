@@ -3,6 +3,9 @@ import reveal_slides as rs
 
 
 def presentation_page():
+    '''
+        Функция для создания страницы c презентацией
+    '''
     st.title("Презентация проекта")
 
     presentation_markdown = """
