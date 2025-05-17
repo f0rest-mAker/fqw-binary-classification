@@ -19,3 +19,5 @@
 - `for_models.ipynb` - блокнот python, в котором выбирается наиболее подходящая модель для задачи.
 - `data/`: Папка с данными.
 - `README.md`: Описание проекта.
+---  
+Видео-обзор приложения можно загрузить вот [тут](https://github.com/f0rest-mAker/fqw-binary-classification/blob/main/video/%D0%9E%D0%B1%D0%B7%D0%BE%D1%80.mp4).
